@@ -22,6 +22,7 @@ Obsidian, gum prompts and keyboard RGB.
 | `unlock-logos/` | All the unlock screen logos to choose from |
 | `doctor-who-unlock` | Picks the unlock screen logo, or a random one |
 | `preview.png` | Picture shown in the theme picker |
+| `extras/` | Fastfetch and Spotify (Spicetify) themes, plus the art scripts |
 
 Wallpapers, all drawn procedurally for this theme:
 
@@ -106,6 +107,41 @@ The built-in logos (`seal`, `blue-box`, `vortex`, `wordmark`, `sonic`,
 
 "Random" picks one when you run it. It doesn't change by itself on every
 boot, because the logo is baked into the boot image and changing it needs sudo.
+
+## Extras: fastfetch and Spotify
+
+Two matching themes for apps Omarchy doesn't theme itself. Install both with:
+
+```bash
+bash ~/.config/omarchy/themes/doctor-who/extras/install-extras.sh
+```
+
+or just one with `install-extras.sh fastfetch` / `install-extras.sh spicetify`.
+
+**Fastfetch** gets a police-box logo with a glowing lamp and the system info
+renamed for the console room: Planet (OS), Time Rotor (kernel), Artron Core
+(CPU), Chameleon Circuit (GPU), Bigger on Inside (memory), Zero Room (disk) and
+a random Doctor quote. Your old config is saved as `config.jsonc.bak`; put it
+back with:
+
+```bash
+mv ~/.config/fastfetch/config.jsonc.bak ~/.config/fastfetch/config.jsonc
+```
+
+**Spotify** (needs [Spicetify](https://spicetify.app)) gets a starfield, a
+slowly drifting time vortex, console-room roundels with a Gallifreyan seal in
+the sidebar, a play button that pulses like the TARDIS lamp, vortex-coloured
+progress bars and a regeneration glow on hovered cards. If Spicetify can't
+patch Spotify, give it write access first:
+
+```bash
+sudo chmod a+wr /opt/spotify /opt/spotify/Apps -R
+spicetify config spotify_path /opt/spotify
+spicetify backup apply
+```
+
+After a Spotify update, run `spicetify backup apply` again. To go back to
+plain Spotify: `spicetify restore`.
 
 ## Uninstall
 

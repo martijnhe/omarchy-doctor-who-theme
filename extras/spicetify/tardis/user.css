@@ -1,0 +1,210 @@
+/* ================================================================
+   TARDIS for Spicetify
+   Time vortex, console-room roundels, a Gallifreyan seal, the TARDIS
+   lamp, sonic glow and regeneration energy. Colours: color.ini
+   ================================================================ */
+
+:root {
+  --dw-blue: #1d4f91;
+  --dw-blue-hi: #286ec8;
+  --dw-lamp: #ffdc78;
+  --dw-sonic: #5aa8ff;
+  --dw-regen: #ff9d3c;
+  --dw-vortex: linear-gradient(90deg, #286ec8 0%, #7b4fd6 40%, #ff9d3c 80%, #ffdc78 100%);
+  --dw-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* ---------- Base ---------- */
+
+/* Accent-filled buttons (play, follow, etc.) take the lamp gold */
+.encore-bright-accent-set,
+.encore-inverted-light-set {
+  background-color: var(--spice-button-active) !important;
+}
+
+/* Soft, quick hover transitions everywhere you click */
+button,
+.main-trackList-trackListRow,
+.main-contextMenu-menuItemButton {
+  transition: color 180ms var(--dw-ease), background-color 180ms var(--dw-ease), box-shadow 180ms var(--dw-ease) !important;
+}
+
+/* Rounded search controls */
+.x-filterBox-expandButton,
+.main-topBar-searchBar {
+  border-radius: 999px !important;
+}
+.main-topBar-searchBar,
+#recent-searches-dropdown > div {
+  background-color: var(--spice-main-elevated) !important;
+}
+
+/* Drop Spotify's colour-matched gradients so the vortex shows through */
+.main-home-homeHeader,
+.main-actionBarBackground-background,
+.playlist-playlist-actionBarBackground-background {
+  display: none !important;
+}
+.main-entityHeader-backgroundColor {
+  background: none !important;
+}
+.main-topBar-background {
+  background: linear-gradient(180deg, rgba(5, 11, 20, 0.95), rgba(11, 26, 48, 0.85)) !important;
+}
+
+/* ---------- Space and the time vortex ---------- */
+
+/* Stars scattered behind the whole app */
+.Root__top-container {
+  background-color: #040a14 !important;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, #ffffff 50%, transparent 51%),
+    radial-gradient(1px 1px at 37% 72%, #c8e1ff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 61% 33%, #ffffff 50%, transparent 51%),
+    radial-gradient(1px 1px at 83% 64%, #ffdc78 50%, transparent 51%),
+    radial-gradient(1px 1px at 92% 12%, #ffffff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 24% 91%, #c8e1ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 72% 88%, #ffffff 50%, transparent 51%) !important;
+  background-size: 220px 220px !important;
+}
+.Root__globalNav {
+  background: rgba(5, 11, 20, 0.92) !important;
+  border-bottom: 2px solid var(--dw-blue) !important;
+}
+
+/* A slow swirl of blue, violet and orange behind the main view */
+.Root__main-view {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(255, 157, 60, 0.30), transparent 60%),
+    radial-gradient(ellipse 110% 80% at 15% 10%, rgba(123, 79, 214, 0.55), transparent 60%),
+    radial-gradient(ellipse 110% 90% at 85% 20%, rgba(40, 110, 200, 0.60), transparent 65%),
+    #0b1a30 !important;
+  background-size: 200% 200%, 200% 200%, 200% 200%, auto !important;
+  animation: dw-vortex 60s ease-in-out infinite alternate;
+}
+@keyframes dw-vortex {
+  from { background-position: 0% 0%, 0% 0%, 100% 0%, 0 0; }
+  to   { background-position: 100% 30%, 60% 40%, 0% 30%, 0 0; }
+}
+.main-home-filterChipsContainer,
+.main-home-filterChipsSection,
+.search-searchCategory-contentArea {
+  background: transparent !important;
+}
+
+/* ---------- Console room ---------- */
+
+/* Roundels down the library sidebar, a Gallifreyan seal at its foot */
+.Root__nav-bar {
+  background-color: var(--spice-sidebar) !important;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%23286ec8' stroke-width='2'%3E%3Ccircle cx='100' cy='100' r='92'/%3E%3Ccircle cx='100' cy='100' r='84' stroke-width='1'/%3E%3Ccircle cx='100' cy='46' r='22'/%3E%3Ccircle cx='100' cy='46' r='6' fill='%23286ec8'/%3E%3Ccircle cx='148' cy='122' r='18'/%3E%3Ccircle cx='141' cy='128' r='3' fill='%23286ec8'/%3E%3Ccircle cx='155' cy='116' r='3' fill='%23286ec8'/%3E%3Ccircle cx='56' cy='128' r='26'/%3E%3Ccircle cx='56' cy='128' r='14'/%3E%3Cpath d='M100 68 L100 100 L148 122 M100 100 L56 128'/%3E%3Cpath d='M30 70 A80 80 0 0 1 70 26' stroke-width='3'/%3E%3Cpath d='M168 150 A80 80 0 0 1 130 176'/%3E%3Ccircle cx='100' cy='100' r='5' fill='%23286ec8'/%3E%3Ccircle cx='118' cy='160' r='9'/%3E%3Cline x1='118' y1='151' x2='118' y2='169'/%3E%3C/svg%3E"),
+    radial-gradient(circle, rgba(40, 110, 200, 0.22) 0 12px, rgba(90, 168, 255, 0.35) 12px 13.5px, transparent 14.5px) !important;
+  background-size: 120px 120px, 38px 38px !important;
+  background-position: center bottom 12px, 0 0 !important;
+  background-repeat: no-repeat, repeat !important;
+}
+.Root__nav-bar .main-yourLibraryX-libraryContainer {
+  background: transparent !important;
+}
+
+/* Police-box panel edges */
+.Root__nav-bar,
+.Root__main-view {
+  border: 1px solid rgba(40, 110, 200, 0.35) !important;
+}
+
+/* Right panel: framed like a TARDIS door panel */
+.Root__right-sidebar {
+  border: 2px solid var(--dw-blue) !important;
+  box-shadow: inset 0 0 0 4px rgba(4, 10, 20, 0.9), inset 0 0 0 5px rgba(40, 110, 200, 0.45) !important;
+}
+
+/* Now-playing bar: the POLICE BOX sign, black framed in TARDIS blue */
+.Root__now-playing-bar {
+  background: #050b14 !important;
+  border-top: 2px solid var(--dw-blue) !important;
+  box-shadow: 0 -6px 18px rgba(29, 79, 145, 0.25);
+}
+
+/* ---------- The lamp, the sonic and regeneration ---------- */
+
+/* TARDIS lamp: the play button glows, and flashes while music plays */
+[data-testid="control-button-playpause"],
+.main-playButton-PlayButton {
+  box-shadow: 0 0 14px rgba(255, 220, 120, 0.45) !important;
+}
+[data-testid="control-button-playpause"][aria-label="Pause"] {
+  animation: dw-lamp 2.6s ease-in-out infinite;
+}
+@keyframes dw-lamp {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 220, 120, 0.35); }
+  50%      { box-shadow: 0 0 22px 4px rgba(255, 220, 120, 0.85); }
+}
+
+/* Progress and volume: travelling through the time vortex */
+.x-progressBar-fillColor {
+  background: var(--dw-vortex) !important;
+  box-shadow: 0 0 8px rgba(255, 157, 60, 0.55) !important;
+}
+
+/* Sonic screwdriver: player and top-bar icons glow blue on hover */
+.player-controls__buttons button:hover svg,
+.main-nowPlayingBar-right button:hover svg,
+.main-topBar-container button:hover svg {
+  color: var(--dw-sonic) !important;
+  fill: var(--dw-sonic) !important;
+  filter: drop-shadow(0 0 5px var(--dw-sonic));
+}
+
+/* Regeneration: cards and library items burn gold-orange on hover */
+.main-card-card,
+[data-encore-id="card"],
+.main-yourLibraryX-listItem {
+  transition: box-shadow 300ms ease !important;
+}
+.main-card-card:hover,
+[data-encore-id="card"]:hover,
+.main-yourLibraryX-listItem:hover {
+  box-shadow: 0 0 0 1px rgba(255, 157, 60, 0.6), 0 0 20px rgba(255, 157, 60, 0.35) !important;
+  border-radius: 6px;
+}
+
+/* Now-playing cover: lit like a TARDIS window */
+[data-testid="now-playing-widget"] img,
+.main-nowPlayingWidget-coverArt img {
+  box-shadow: 0 0 0 1px var(--dw-blue-hi), 0 0 12px rgba(200, 225, 255, 0.35) !important;
+}
+
+/* Playlist and album cover: framed in TARDIS blue */
+.main-entityHeader-image {
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px var(--dw-blue), 0 8px 30px rgba(29, 79, 145, 0.5) !important;
+}
+
+/* Track rows: a roundel glows at the start of the hovered row */
+.main-trackList-trackListRow:hover {
+  background:
+    radial-gradient(circle at 18px 50%, rgba(40, 110, 200, 0.25) 0 10px, transparent 11px),
+    rgba(40, 110, 200, 0.10) !important;
+}
+
+/* The playing track is lit gold, like the lamp */
+.main-trackList-active .main-trackList-rowTitle,
+.main-trackList-rowTitle[class*="active"] {
+  color: var(--dw-lamp) !important;
+}
+
+/* Thin lamp-gold scrollbars */
+.os-scrollbar-handle {
+  background: var(--dw-lamp) !important;
+  border-radius: 8px;
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Root__main-view,
+  [data-testid="control-button-playpause"][aria-label="Pause"] {
+    animation: none !important;
+  }
+}

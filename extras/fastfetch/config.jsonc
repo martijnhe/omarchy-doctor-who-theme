@@ -1,0 +1,54 @@
+// Doctor Who / TARDIS theme for fastfetch
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": {
+        "type": "file",
+        "source": "~/.config/fastfetch/tardis.txt",
+        "color": {
+            "1": "38;2;40;110;200",
+            "2": "97",
+            "3": "38;2;255;220;120",
+            "4": "38;2;200;225;255"
+        },
+        "padding": { "top": 1, "right": 3 }
+    },
+    "display": {
+        "separator": "  ",
+        "color": {
+            "keys": "38;2;70;140;230",
+            "title": "38;2;255;220;120",
+            "output": "97"
+        },
+        "key": { "width": 22 }
+    },
+    "modules": [
+        "break",
+        {
+            "type": "title",
+            "format": "\u001b[1;38;2;255;220;120mThe Doctor is in: {user-name}@{host-name}"
+        },
+        {
+            "type": "custom",
+            "format": "\u001b[38;2;40;110;200m─────────────────────────────────────────────"
+        },
+        { "type": "os",       "key": "◆ Planet" },
+        { "type": "host",     "key": "◆ TARDIS Type" },
+        { "type": "kernel",   "key": "◆ Time Rotor" },
+        { "type": "uptime",   "key": "◆ Time in Vortex" },
+        { "type": "packages", "key": "◆ Archives" },
+        { "type": "shell",    "key": "◆ Sonic Screwdriver" },
+        { "type": "wm",       "key": "◆ Console Room" },
+        { "type": "terminal", "key": "◆ Telepathic Circuit" },
+        { "type": "cpu",      "key": "◆ Artron Core" },
+        { "type": "gpu",      "key": "◆ Chameleon Circuit" },
+        { "type": "memory",   "key": "◆ Bigger on Inside" },
+        { "type": "disk",     "key": "◆ Zero Room", "folders": "/" },
+        {
+            "type": "command",
+            "key": "◆ Destination",
+            "text": "shuf -n1 -e 'Allons-y!' 'Geronimo!' 'Fantastic!' 'Wibbly wobbly, timey wimey.' 'Run!' 'Bow ties are cool.' 'Somewhere in space and time...'"
+        },
+        "break",
+        "colors"
+    ]
+}
