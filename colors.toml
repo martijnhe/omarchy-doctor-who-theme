@@ -1,0 +1,37 @@
+# Doctor Who for Omarchy
+# TARDIS blue nights, Gallifreyan gold, and a little time vortex.
+mode = "dark"
+
+accent = "#f0b44c"
+selection = "#1c3a63"
+muted = "#3a5578"
+
+background = "#0a1424"
+dark_background = "#070e1a"
+darker_background = "#040912"
+lighter_background = "#12223a"
+
+foreground = "#d8e3f0"
+dark_foreground = "#6f86a6"
+light_foreground = "#e4ecf6"
+bright_foreground = "#f5f8fc"
+
+# Window borders: Gallifreyan gold fading into TARDIS blue
+hyprland_active_border = "rgba(f0b44cee) rgba(3d8be0ee) 45deg"
+hyprland_inactive_border = "rgba(1c3a63aa)"
+
+red = "#e5566e"
+yellow = "#f0c35a"
+orange = "#f08a3c"
+green = "#6fd39b"
+cyan = "#5ec8e5"
+blue = "#3d8be0"
+magenta = "#b48cff"
+brown = "#8a5a2b"
+
+bright_red = "#ff7d92"
+bright_yellow = "#ffd77e"
+bright_green = "#94ecb8"
+bright_cyan = "#8ee0f5"
+bright_blue = "#6eaaf0"
+bright_magenta = "#cfb3ff"

@@ -1,0 +1,145 @@
+#!/bin/bash
+
+# Choose the logo on the Doctor Who unlock screen (the boot disk-unlock screen,
+# and the SDDM login screen when SDDM is installed).
+#
+#   doctor-who-unlock            open a picker with a preview of every logo
+#   doctor-who-unlock random     use a random logo
+#   doctor-who-unlock <name>     use one logo by name, e.g. seal
+#   doctor-who-unlock list       print the logo names
+#
+# Logos are PNG, JPG or WebP files in either of these folders (your own folder
+# wins when two logos share a name, and survives reinstalling the theme):
+#   ~/.config/omarchy/doctor-who/unlock-logos/
+#   <theme folder>/unlock-logos/
+#
+# Applying a logo runs omarchy-plymouth-set, which asks for sudo and rebuilds
+# the initramfs, so it takes a little while.
+
+set -euo pipefail
+
+THEME_NAME=doctor-who
+THEME_DIR=$(omarchy-theme-dir "$THEME_NAME")
+USER_LOGOS="$HOME/.config/omarchy/doctor-who/unlock-logos"
+THEME_LOGOS="$THEME_DIR/unlock-logos"
+CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/omarchy/doctor-who-unlock"
+MAX_SIZE="800x400"
+
+if [[ ! -d $THEME_DIR ]]; then
+  echo "The $THEME_NAME theme is not installed in ~/.config/omarchy/themes." >&2
+  exit 1
+fi
+
+theme_color() {
+  awk -F= -v key="$1" '
+    { field = $1; gsub(/^[[:space:]]+|[[:space:]]+$/, "", field) }
+    field == key { v = $2; gsub(/^[[:space:]"]+|[[:space:]"]+$/, "", v); print v; exit }
+  ' "$THEME_DIR/colors.toml"
+}
+
+BG=$(theme_color background)
+FG=$(theme_color foreground)
+
+# Print "name<TAB>path" for every logo, your own folder first so it wins.
+logos() {
+  local dir file name
+  declare -A seen=()
+  for dir in "$USER_LOGOS" "$THEME_LOGOS"; do
+    [[ -d $dir ]] || continue
+    while IFS= read -r -d '' file; do
+      name=${file##*/}
+      name=${name%.*}
+      [[ -n ${seen[$name]+_} ]] && continue
+      seen[$name]=1
+      printf '%s\t%s\n' "$name" "$file"
+    done < <(find "$dir" -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) -print0 | sort -z)
+  done
+}
+
+logo_path() {
+  logos | awk -F'\t' -v n="$1" '$1 == n && !found { print $2; found = 1 }'
+}
+
+# Plymouth draws the logo at its real size, so shrink big ones to fit and
+# turn everything into a plain PNG file (omarchy-plymouth-set refuses links).
+prepare_logo() {
+  local source="$1" output="$2"
+  if omarchy-cmd-present magick; then
+    magick "$source" -background none -resize "${MAX_SIZE}>" "PNG32:$output"
+  elif [[ ${source,,} == *.png ]]; then
+    cp --dereference "$source" "$output"
+  else
+    echo "ImageMagick is needed to use $source (only PNG works without it)." >&2
+    exit 1
+  fi
+}
+
+apply_logo() {
+  local name="$1" source prepared
+  source=$(logo_path "$name")
+  if [[ -z $source ]]; then
+    echo "No logo called '$name'. Try: doctor-who-unlock list" >&2
+    exit 1
+  fi
+
+  mkdir -p "$CACHE"
+  prepared="$CACHE/logo.png"
+  prepare_logo "$source" "$prepared"
+
+  echo "Setting the unlock screen logo to '$name'..."
+  omarchy-plymouth-set "$BG" "$FG" "$prepared"
+
+  # Keep the theme's own unlock.png in step, so Style > Unlock shows this
+  # theme as current and re-applying it from there keeps your choice.
+  cp "$prepared" "$THEME_DIR/unlock.png" 2>/dev/null || true
+  echo "Done. You'll see it the next time you boot."
+}
+
+# A rough picture of the unlock screen: the logo centred on the theme
+# background, with the password box 40px below it like Plymouth draws it.
+render_preview() {
+  local logo="$1" output="$2" h entry_y
+  if ! omarchy-cmd-present magick; then
+    cp "$logo" "$output"
+    return
+  fi
+  h=$(magick identify -format '%h' "$logo")
+  entry_y=$(( (1080 - h) / 2 + h + 40 ))
+  magick -size 1920x1080 "xc:$BG" "$logo" -gravity center -composite \
+    -fill none -stroke "$FG" -strokewidth 2 \
+    -draw "rectangle 817,$entry_y 1103,$((entry_y + 48))" "$output"
+}
+
+pick() {
+  local previews="$CACHE/previews" name file choice
+  rm -rf "$previews"
+  mkdir -p "$previews"
+  while IFS=$'\t' read -r name file; do
+    prepare_logo "$file" "$CACHE/prepared-$name.png"
+    render_preview "$CACHE/prepared-$name.png" "$previews/$name.png"
+  done < <(logos)
+  cp "$THEME_LOGOS/previews/random.png" "$previews/random.png" 2>/dev/null || true
+
+  choice=$(omarchy-menu-images --print-name --show-labels "$previews") || exit 0
+  [[ -n $choice ]] || exit 0
+  if [[ $choice == random ]]; then
+    random_logo
+  else
+    apply_logo "$choice"
+  fi
+}
+
+random_logo() {
+  local name
+  name=$(logos | cut -f1 | shuf -n 1)
+  [[ -n $name ]] || { echo "No logos found in $USER_LOGOS or $THEME_LOGOS" >&2; exit 1; }
+  apply_logo "$name"
+}
+
+case "${1:-pick}" in
+  pick) pick ;;
+  random) random_logo ;;
+  list) logos | cut -f1 ;;
+  -h | --help) sed -n '3,17p' "$0" | sed 's/^# \{0,1\}//' ;;
+  *) apply_logo "$1" ;;
+esac
